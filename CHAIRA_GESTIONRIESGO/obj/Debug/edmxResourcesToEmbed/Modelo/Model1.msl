@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RepositorioUAModelStoreContainer" CdmEntityContainer="RepositorioUAEntities">
+    <EntitySetMapping Name="estadoprivilegio">
+      <EntityTypeMapping TypeName="RepositorioUAModel.estadoprivilegio">
+        <MappingFragment StoreEntitySet="estadoprivilegio">
+          <ScalarProperty Name="idestadoprivilegio" ColumnName="idestadoprivilegio" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="estadorol">
+      <EntityTypeMapping TypeName="RepositorioUAModel.estadorol">
+        <MappingFragment StoreEntitySet="estadorol">
+          <ScalarProperty Name="idestadorol" ColumnName="idestadorol" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="menu">
+      <EntityTypeMapping TypeName="RepositorioUAModel.menu">
+        <MappingFragment StoreEntitySet="menu">
+          <ScalarProperty Name="idmenu" ColumnName="idmenu" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="ruta" ColumnName="ruta" />
+          <ScalarProperty Name="extension" ColumnName="extension" />
+          <ScalarProperty Name="mid" ColumnName="mid" />
+          <ScalarProperty Name="fkmenu" ColumnName="fkmenu" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="privilegio">
+      <EntityTypeMapping TypeName="RepositorioUAModel.privilegio">
+        <MappingFragment StoreEntitySet="privilegio">
+          <ScalarProperty Name="idprivilegio" ColumnName="idprivilegio" />
+          <ScalarProperty Name="fkestadoprivilegio" ColumnName="fkestadoprivilegio" />
+          <ScalarProperty Name="fkrol" ColumnName="fkrol" />
+          <ScalarProperty Name="fkmenu" ColumnName="fkmenu" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rol">
+      <EntityTypeMapping TypeName="RepositorioUAModel.rol">
+        <MappingFragment StoreEntitySet="rol">
+          <ScalarProperty Name="idrol" ColumnName="idrol" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="fkestadorol" ColumnName="fkestadorol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="RepositorioUAModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+          <ScalarProperty Name="usuario1" ColumnName="usuario" />
+          <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+          <ScalarProperty Name="fkrol" ColumnName="fkrol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RepositorioUAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="estadoprivilegio">
+    <Key>
+      <PropertyRef Name="idestadoprivilegio" />
+    </Key>
+    <Property Name="idestadoprivilegio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="privilegio" Relationship="Self.fkestadop" FromRole="estadoprivilegio" ToRole="privilegio" />
+  </EntityType>
+  <EntityType Name="estadorol">
+    <Key>
+      <PropertyRef Name="idestadorol" />
+    </Key>
+    <Property Name="idestadorol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="rol" Relationship="Self.fkrolesta" FromRole="estadorol" ToRole="rol" />
+  </EntityType>
+  <EntityType Name="menu">
+    <Key>
+      <PropertyRef Name="idmenu" />
+    </Key>
+    <Property Name="idmenu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ruta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="extension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fkmenu" Type="Int32" />
+    <NavigationProperty Name="privilegio" Relationship="Self.fkmenu" FromRole="menu" ToRole="privilegio" />
+    <NavigationProperty Name="menu1" Relationship="Self.fksm" FromRole="menu" ToRole="menu1" />
+    <NavigationProperty Name="menu2" Relationship="Self.fksm" FromRole="menu1" ToRole="menu" />
+  </EntityType>
+  <EntityType Name="privilegio">
+    <Key>
+      <PropertyRef Name="idprivilegio" />
+    </Key>
+    <Property Name="idprivilegio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fkestadoprivilegio" Type="Int32" />
+    <Property Name="fkrol" Type="Int32" />
+    <Property Name="fkmenu" Type="Int32" />
+    <NavigationProperty Name="estadoprivilegio" Relationship="Self.fkestadop" FromRole="privilegio" ToRole="estadoprivilegio" />
+    <NavigationProperty Name="menu" Relationship="Self.fkmenu" FromRole="privilegio" ToRole="menu" />
+    <NavigationProperty Name="rol" Relationship="Self.fkroll" FromRole="privilegio" ToRole="rol" />
+  </EntityType>
+  <EntityType Name="rol">
+    <Key>
+      <PropertyRef Name="idrol" />
+    </Key>
+    <Property Name="idrol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fkestadorol" Type="Int32" />
+    <NavigationProperty Name="estadorol" Relationship="Self.fkrolesta" FromRole="rol" ToRole="estadorol" />
+    <NavigationProperty Name="privilegio" Relationship="Self.fkroll" FromRole="rol" ToRole="privilegio" />
+    <NavigationProperty Name="usuario" Relationship="Self.fkroll2" FromRole="rol" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="idusuario" />
+    </Key>
+    <Property Name="idusuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="usuario1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="contrasena" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="fkrol" Type="Int32" />
+    <NavigationProperty Name="rol" Relationship="Self.fkroll2" FromRole="usuario" ToRole="rol" />
+  </EntityType>
+  <Association Name="fkestadop">
+    <End Role="estadoprivilegio" Type="Self.estadoprivilegio" Multiplicity="0..1" />
+    <End Role="privilegio" Type="Self.privilegio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estadoprivilegio">
+        <PropertyRef Name="idestadoprivilegio" />
+      </Principal>
+      <Dependent Role="privilegio">
+        <PropertyRef Name="fkestadoprivilegio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkrolesta">
+    <End Role="estadorol" Type="Self.estadorol" Multiplicity="0..1" />
+    <End Role="rol" Type="Self.rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estadorol">
+        <PropertyRef Name="idestadorol" />
+      </Principal>
+      <Dependent Role="rol">
+        <PropertyRef Name="fkestadorol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkmenu">
+    <End Role="menu" Type="Self.menu" Multiplicity="0..1" />
+    <End Role="privilegio" Type="Self.privilegio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="menu">
+        <PropertyRef Name="idmenu" />
+      </Principal>
+      <Dependent Role="privilegio">
+        <PropertyRef Name="fkmenu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fksm">
+    <End Role="menu" Type="Self.menu" Multiplicity="0..1" />
+    <End Role="menu1" Type="Self.menu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="menu">
+        <PropertyRef Name="idmenu" />
+      </Principal>
+      <Dependent Role="menu1">
+        <PropertyRef Name="fkmenu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkroll">
+    <End Role="rol" Type="Self.rol" Multiplicity="0..1" />
+    <End Role="privilegio" Type="Self.privilegio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol">
+        <PropertyRef Name="idrol" />
+      </Principal>
+      <Dependent Role="privilegio">
+        <PropertyRef Name="fkrol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkroll2">
+    <End Role="rol" Type="Self.rol" Multiplicity="0..1" />
+    <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol">
+        <PropertyRef Name="idrol" />
+      </Principal>
+      <Dependent Role="usuario">
+        <PropertyRef Name="fkrol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RepositorioUAEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="estadoprivilegio" EntityType="Self.estadoprivilegio" />
+    <EntitySet Name="estadorol" EntityType="Self.estadorol" />
+    <EntitySet Name="menu" EntityType="Self.menu" />
+    <EntitySet Name="privilegio" EntityType="Self.privilegio" />
+    <EntitySet Name="rol" EntityType="Self.rol" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" />
+    <AssociationSet Name="fkestadop" Association="Self.fkestadop">
+      <End Role="estadoprivilegio" EntitySet="estadoprivilegio" />
+      <End Role="privilegio" EntitySet="privilegio" />
+    </AssociationSet>
+    <AssociationSet Name="fkrolesta" Association="Self.fkrolesta">
+      <End Role="estadorol" EntitySet="estadorol" />
+      <End Role="rol" EntitySet="rol" />
+    </AssociationSet>
+    <AssociationSet Name="fkmenu" Association="Self.fkmenu">
+      <End Role="menu" EntitySet="menu" />
+      <End Role="privilegio" EntitySet="privilegio" />
+    </AssociationSet>
+    <AssociationSet Name="fksm" Association="Self.fksm">
+      <End Role="menu" EntitySet="menu" />
+      <End Role="menu1" EntitySet="menu" />
+    </AssociationSet>
+    <AssociationSet Name="fkroll" Association="Self.fkroll">
+      <End Role="rol" EntitySet="rol" />
+      <End Role="privilegio" EntitySet="privilegio" />
+    </AssociationSet>
+    <AssociationSet Name="fkroll2" Association="Self.fkroll2">
+      <End Role="rol" EntitySet="rol" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

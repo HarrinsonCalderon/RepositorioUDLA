@@ -11,7 +11,7 @@
 <head runat="server">
     <title>Documentos</title>
     <link href="/resources/css/examples.css" rel="stylesheet" />
-    <link href="../../Estilos/Css/EstiloPrincipal.css" rel="stylesheet" />
+   
     <style>
         a{
         text-decoration:none;

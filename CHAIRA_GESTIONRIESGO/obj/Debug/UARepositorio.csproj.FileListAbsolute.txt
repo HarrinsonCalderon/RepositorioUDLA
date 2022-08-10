@@ -23,3 +23,7 @@ E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\obj\Debug\UARepositorio.csproj.C
 E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\obj\Debug\UARepositorio.csproj.CopyComplete
 E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\obj\Debug\CHAIRA_GESTIONRIESGO.dll
 E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\obj\Debug\CHAIRA_GESTIONRIESGO.pdb
+E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\bin\EntityFramework.dll
+E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\bin\EntityFramework.SqlServer.dll
+E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\bin\EntityFramework.xml
+E:\Proyectos\RepositorioUA\CHAIRA_GESTIONRIESGO\bin\EntityFramework.SqlServer.xml
