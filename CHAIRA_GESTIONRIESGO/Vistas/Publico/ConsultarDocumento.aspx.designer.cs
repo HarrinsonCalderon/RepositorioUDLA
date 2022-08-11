@@ -15,6 +15,15 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Publico
     {
 
         /// <summary>
+        /// Control TextField1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.TextField TextField1;
+
+        /// <summary>
         /// Control TreePanel1.
         /// </summary>
         /// <remarks>
@@ -51,12 +60,39 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Publico
         protected global::Ext.Net.Button Button2;
 
         /// <summary>
-        /// Control Pages.
+        /// Control WinVerAdjunto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Ext.Net.TabPanel Pages;
+        protected global::Ext.Net.FormPanel WinVerAdjunto;
+
+        /// <summary>
+        /// Control PanelContenedor1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Panel PanelContenedor1;
+
+        /// <summary>
+        /// Control Contenedor2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Container Contenedor2;
+
+        /// <summary>
+        /// Control ImagenAdjunto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Image ImagenAdjunto;
     }
 }

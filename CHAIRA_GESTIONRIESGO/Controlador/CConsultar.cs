@@ -9,9 +9,9 @@ namespace CHAIRA_GESTIONRIESGO.Controlador
     public class CConsultar
     {
         MConsultar Mc = new MConsultar();
-        public List<Menu> CargarMenu()
+        public List<Menu> CargarMenu(string p)
         {
-            return Mc.CargarMenu();
+            return Mc.CargarMenu(p);
         }
     }
 }
