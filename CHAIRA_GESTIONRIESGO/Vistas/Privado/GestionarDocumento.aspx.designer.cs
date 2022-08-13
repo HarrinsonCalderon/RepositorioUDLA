@@ -24,6 +24,33 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.Panel Window1;
 
         /// <summary>
+        /// Control TriggerField1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.TextField TriggerField1;
+
+        /// <summary>
+        /// Control Button5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Button Button5;
+
+        /// <summary>
+        /// Control Button6.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Button Button6;
+
+        /// <summary>
         /// Control TreePanel1.
         /// </summary>
         /// <remarks>
@@ -31,6 +58,15 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::Ext.Net.TreePanel TreePanel1;
+
+        /// <summary>
+        /// Control tienda.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.TreeStore tienda;
 
         /// <summary>
         /// Control w_ventana.
@@ -42,13 +78,40 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.Window w_ventana;
 
         /// <summary>
-        /// Control BasicField.
+        /// Control t_nombreCarpetaw.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Ext.Net.FileUploadField BasicField;
+        protected global::Ext.Net.TextField t_nombreCarpetaw;
+
+        /// <summary>
+        /// Control t_NombreCarpeta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.TextField t_NombreCarpeta;
+
+        /// <summary>
+        /// Control TArchivoSoporteMeta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.FileUploadField TArchivoSoporteMeta;
+
+        /// <summary>
+        /// Control BArchivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Button BArchivo;
 
         /// <summary>
         /// Control ComboBox1.
@@ -60,13 +123,13 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.ComboBox ComboBox1;
 
         /// <summary>
-        /// Control Store1.
+        /// Control s_comboEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store s_comboEstado;
 
         /// <summary>
         /// Control Panel7.

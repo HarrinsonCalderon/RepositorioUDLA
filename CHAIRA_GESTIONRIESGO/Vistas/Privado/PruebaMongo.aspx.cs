@@ -19,41 +19,46 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
     {
         string _pege_id;
         Util cUtil = new Util();
-        MongoNoSQL MG = new MongoNoSQL("DocumentosPOAI", "172.16.31.19:27017");
+        
+        MongoNoSQL MG = new MongoNoSQL("fs.files", "mongodb://localhost:27017");
         protected void Page_Load(object sender, EventArgs e)
         {
             _pege_id = cUtil.GetPege();
         }
 
 
-        protected void VerSoporte2(object sender, DirectEventArgs e) {
+        protected void VerSoporte2(object sender, DirectEventArgs e)
+        {
             string IncaAdjunto = "62ee849902809544acbb9032";
             var cliente = new MongoClient("mongodb://localhost:27017");
             var database = cliente.GetDatabase("DocumentosPOAI");
             var collection1 = database.GetCollection<MongoInfoArchivo2>("fs.files");
             var collection2 = database.GetCollection<MongoInfoArchivo2>("fs.chunks");
 
-            
+
             List<MongoInfoArchivo2> result1 = (from d in collection1.AsQueryable<MongoInfoArchivo2>()
-                         
-                         select new MongoInfoArchivo2 {
-                             length = d.length,
-                             Id=d.Id,
-                             filename=d.filename,
-                         } 
+
+                                               select new MongoInfoArchivo2
+                                               {
+                                                   length = d.length,
+                                                   Id = d.Id,
+                                                   filename = d.filename,
+                                               }
                          ).ToList();
             List<MongoInfoArchivo2> result2 = (from d in collection2.AsQueryable<MongoInfoArchivo2>()
 
-                                              select new MongoInfoArchivo2
-                                              {
-                                                  length = d.length,
-                                                  Id = d.Id,
-                                                  data = d.data,
-                                              }
+                                               select new MongoInfoArchivo2
+                                               {
+                                                   length = d.length,
+                                                   Id = d.Id,
+                                                   data = d.data,
+                                               }
                          ).ToList();
-            MongoInfoArchivo InfArchivo=new MongoInfoArchivo ();
-            foreach (var it in result1) {
-                if (it.Id.ToString()==IncaAdjunto) {
+            MongoInfoArchivo InfArchivo = new MongoInfoArchivo();
+            foreach (var it in result1)
+            {
+                if (it.Id.ToString() == IncaAdjunto)
+                {
                     InfArchivo.Id = IncaAdjunto.ToString();
                     InfArchivo.NombreArchivo = it.filename;
                     break;
@@ -61,23 +66,23 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
             }
             foreach (var it in result2)
             {
-                if (it.Id.ToString() ==IncaAdjunto)
+                if (it.Id.ToString() == IncaAdjunto)
                 {
-                     
+
                     InfArchivo.Archivo = it.data;
                     break;
                 }
             }
-            InfArchivo.Extension = InfArchivo.NombreArchivo.Substring(InfArchivo.NombreArchivo.IndexOf(".")+1);
+            InfArchivo.Extension = InfArchivo.NombreArchivo.Substring(InfArchivo.NombreArchivo.IndexOf(".") + 1);
         }
-        protected void VerSoporte(object sender, DirectEventArgs e)
+        protected void VerSoporteEEE(object sender, DirectEventArgs e)
         {
             try
             {
                 //string IncaAdjunto = e.ExtraParams["MONID"].ToString();
                 //string IncaAdjunto = "62ee8304028095420cf741da";
                 // H
-                string IncaAdjunto = "62ee849902809544acbb9032";
+                string IncaAdjunto = "62f7daf60280952d2092179d";
                 var cliente = new MongoClient("mongodb://localhost:27017");
                 var database = cliente.GetDatabase("DocumentosPOAI");
                 var collection1 = database.GetCollection<MongoInfoArchivo2>("fs.files");
@@ -100,7 +105,7 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
                                                        length = d.length,
                                                        Id = d.Id,
                                                        data = d.data,
-                                                       files_id=d.files_id
+                                                       files_id = d.files_id
                                                    }
                              ).ToList();
                 MongoInfoArchivo InfArchivo = new MongoInfoArchivo();
@@ -119,10 +124,10 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
                     if (it2.files_id.ToString() == IncaAdjunto)
                     {
                         //int ii = 0;
-                       // foreach(var i in it2.data) { 
-                        
+                        // foreach(var i in it2.data) { 
+
                         InfArchivo.Archivo = it2.data;
-                          //  ii++;
+                        //  ii++;
                         //}
                         break;
                     }
@@ -168,7 +173,53 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
                 X.Msg.Notify("Error", "El archivo adjunto no se encontró, es posible que se halla removido o cambiado de ruta");
             }
         }
+        protected void VerSoporteDTI(object sender, DirectEventArgs e)
+        {
+            try
+            {
+                ArchivosMongo am = new ArchivosMongo("DOC");
+               
+                //string IncaAdjunto = e.ExtraParams["MONID"].ToString();
+                string IncaAdjunto = "62f7daf60280952d2092179d";
+                MongoInfoArchivo InfArchivo = MG.DocumentoConsultarId(IncaAdjunto);
 
+                if (InfArchivo.Archivo.Length > 0)
+                {
+                    if (Array.IndexOf(new String[] { "jpg", "png", "gif", "ico", "tif", "bmp", "emf", "wmf", "exif" }, InfArchivo.Extension.ToLower()) >= 0)
+                    {
+                        X.AddScript("App.WinVerAdjunto.setActiveItem(1);");
+                        this.ImagenAdjunto.ImageUrl = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(InfArchivo.Archivo));
+                        this.WinVerAdjunto.Show();
+                    }
+                    else if (InfArchivo.Extension.ToLower() == "pdf")
+                    {
+                        X.AddScript("App.WinVerAdjunto.setActiveItem(0);");
+                        Session["DATA"] = new Dictionary<String, Object>() { { "NOMBREARCHIVO", "Documento.pdf" }, { "DESCARGAINMEDIATA", "NO" }, { "ARCHIVO", InfArchivo.Archivo.ToArray() } };
+                        PanelContenedor1.Loader = new ComponentLoader { Url = "..\\PaginasWeb\\Descarga.aspx" };
+                        PanelContenedor1.LoadContent();
+                        this.WinVerAdjunto.Show();
+                    }
+                    else
+                    {
+                        Session["DATA"] = new Dictionary<String, Object>() { { "NOMBREARCHIVO", InfArchivo.NombreArchivo }, { "DESCARGAINMEDIATA", "SI" }, { "ARCHIVO", InfArchivo.Archivo.ToArray() } };
+
+                        PanelContenedor1.Loader = new ComponentLoader { Url = "..\\PaginasWeb\\Descarga.aspx" };
+                        PanelContenedor1.LoadContent();
+                        this.WinVerAdjunto.Show();
+                        WinVerAdjunto.Hide();
+                    }
+
+
+                }
+                else X.Msg.Notify("Error", "El archivo adjunto no se encontró, es posible que se halla removido o cambiado de ruta");
+
+
+            }
+            catch (Exception)
+            {
+                X.Msg.Notify("Error", "El archivo adjunto no se encontró, es posible que se halla removido o cambiado de ruta");
+            }
+        }
         protected void AgregarArchivo_Click(object sender, DirectEventArgs e)
         {
             try
@@ -216,6 +267,6 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
             return name.Replace('á', 'a').Replace('é', 'e').Replace('í', 'i').Replace('ó', 'o').Replace('ú', 'u');
         }
 
-         
+
     }
 }

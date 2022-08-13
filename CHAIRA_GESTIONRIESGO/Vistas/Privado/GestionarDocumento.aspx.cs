@@ -1,30 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CHAIRA_GESTIONRIESGO.Controlador;
+using CHAIRA_GESTIONRIESGO.Modelo.Models;
+using CHAIRA_GESTIONRIESGO.Utilities;
+using ChairaMongo;
 using Ext.Net;
 namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
 {
     public partial class GestionarDocumento : System.Web.UI.Page
     {
+        CConsultar Cc = new CConsultar();
+        string _pege_id;
+        Util cUtil = new Util();
         protected void Page_Load(object sender, EventArgs e)
         {
+            _pege_id = cUtil.GetPege();
             //Node root = this.CrearMenu();
-            Node root = new Node();
-            root.AllowDrag = false;
-            Node nodos = this.CrearMenu();
-            root.Children.Add(nodos);
+            //Node root = new Node();
+            //root.AllowDrag = false;
+            //Node nodos = this.CrearMenu();
+            //root.Children.Add(nodos);
 
-            TreePanel1.RootVisible = true;
-            TreePanel1.Root.Add(nodos);
+            //TreePanel1.RootVisible = true;
+            //TreePanel1.Root.Add(nodos);
+
+            if (!IsPostBack) {
+                this.s_comboEstado.DataSource=Cc.CargarComboEstado();
+                this.s_comboEstado.DataBind();
+            }
 
 
 
         }
 
+        protected void NodeLoad(object sender, NodeLoadEventArgs e)
+        {
+            string prefix = e.ExtraParams["prefix"] ?? "";
 
+            if (!string.IsNullOrEmpty(e.NodeID))
+            {
+                List<CHAIRA_GESTIONRIESGO.Modelo.Modelsbd.Menu> lista = Cc.CargarMenu(e.NodeID);
+                for (int i = 0; i < lista.Count(); i++)
+                {
+                    Node asyncNode = new Node();
+                    asyncNode.Text = lista[i].Nombre;
+                    asyncNode.NodeID = lista[i].Id;
+                    if (lista[i].Extencion == "Directorio")
+                        asyncNode.Icon = Icon.Folder;
+                    else
+                    {
+                        asyncNode.Icon = Ext.Net.Icon.PageWhiteAcrobat;
+                        asyncNode.Href = lista[i].Mid;
+                    }
+                    //custom
+                    ConfigItem auxConfig1 = new ConfigItem();
+                    auxConfig1.Name = "nombre";
+                    auxConfig1.Value = lista[i].Nombre; ;
+                    ConfigItem auxConfig2 = new ConfigItem();
+                    auxConfig2.Name = "tamaño";
+                    auxConfig2.Value = "4 kb";
+                    ConfigItem auxConfig3 = new ConfigItem();
+                    auxConfig3.Name = "tipo";
+                    auxConfig3.Value = lista[i].Extencion;
+                    ConfigItem auxConfigid = new ConfigItem();
+                    auxConfigid.Name = "id";
+                    auxConfigid.Value = lista[i].Id;
+                    asyncNode.CustomAttributes.Add(auxConfig1);
+                    asyncNode.CustomAttributes.Add(auxConfig2);
+                    asyncNode.CustomAttributes.Add(auxConfig3);
+                    asyncNode.CustomAttributes.Add(auxConfigid);
+
+                    e.Nodes.Add(asyncNode);
+
+                }
+
+
+            }
+        }
 
 
         private Node CrearMenu()
@@ -151,8 +208,10 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         [DirectMethod]
         public void ActivarVentana(string nodeid, string op)
         {
+            Session["Padre"] = nodeid;
             if (op == "1")
             {
+                 
                 this.w_ventana.Hidden = false;
             }
             else
@@ -162,5 +221,116 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
             //Console.Write("si");
 
         }
+
+        #region gestion de archivos
+        protected void AgregarArchivo_Click(object sender, DirectEventArgs e)
+        {
+            try
+            {
+                if (TArchivoSoporteMeta.HasFile)
+                {
+                    string ext = Path.GetExtension(TArchivoSoporteMeta.FileName);
+                    string nombreArchivo = this.ObtenerNombreArchivo(TArchivoSoporteMeta.FileName.Substring(0,TArchivoSoporteMeta.FileName.LastIndexOf(".")));
+                    //string descripcion = TFDescripcionSoporteMeta.Text;
+                    //var datasoporte = (JObject)JsonConvert.DeserializeObject(e.ExtraParams["data"]);
+                    //var datasoporte = e.ExtraParams["data"].ToString();
+
+
+                    ArchivosMongo am = new ArchivosMongo("DOC");
+                    byte[] archivo = TArchivoSoporteMeta.FileBytes;
+                    string fileName = nombreArchivo;
+
+                    //Guardar documento adjunto en MongoDB
+                    MongoRespuesta respuesta = am.guardarArchivo(archivo, ext, fileName, _pege_id);
+                    this.tienda.Reload();
+                    if (respuesta.Tipo == MongoTipoRes.SI)
+                    {
+
+
+                    }
+                    else
+                    {
+                        X.Msg.Notify("Error al guardar el archivo", "Error al guardar el archivo en la base de datos general" + respuesta.Mensaje).Show();
+                    }
+                }
+                else
+                {
+                    X.Msg.Notify("Información", "No se ha seleccionado un archivo de referencia").Show();
+                }
+                if (Session["Padre"]!=null) {
+                    try {
+                        MongoInfoArchivo2 registroMongo = Cc.CargarUltimoDocumento();
+                        Cc.GuardarMenu(registroMongo, Session["Padre"].ToString());
+                        //Session["Padre"] = null;
+                        this.TArchivoSoporteMeta.Clear();
+                        X.Msg.Notify("Mensaje", "Proceso completado");
+
+                    }
+                    catch (Exception ea) {
+                        X.Msg.Notify("Error", "Ha ocurrido un error");
+                    }
+                    
+                }
+            }
+
+            catch (Exception ex)
+            {
+                X.Msg.Notify("Error", "Ha ocurrido un error al guardar archivo. Detalle: " + ex.Message).Show();
+            }
+        }
+        public string ObtenerNombreArchivo(string name)
+        {
+            name = name.ToLower();
+            name = name.Trim();
+            return name.Replace('á', 'a').Replace('é', 'e').Replace('í', 'i').Replace('ó', 'o').Replace('ú', 'u');
+        }
+        protected void AgregarCarpeta_Click(object sender, EventArgs e)
+        {
+            string n = t_NombreCarpeta.Text.ToString();
+            
+            if (Session["Padre"] != null && n.Trim() != "")
+            {
+                try {
+                    string p = Session["Padre"].ToString();
+                    MongoInfoArchivo2 registroMongo = Cc.CargarUltimoDocumento();
+                    Cc.GuardarCarpeta(n, Session["Padre"].ToString());
+                    //Session["Padre"] = null;
+                    this.t_NombreCarpeta.Text = "";
+                    this.tienda.Reload();
+                    X.Msg.Notify("Mensaje", "Proceso completado");
+                }
+                catch (Exception ea) {
+                    X.Msg.Notify("Error", "Ha ocurrido un error");
+                }
+              
+                
+            }
+            else {
+                X.Msg.Notify("Error", "Todos los datos son obligatorios");
+            }
+
+
+        }
+        
+       protected void CambiarNombreCarpeta_Click(object sender, EventArgs e) {
+            try {
+                string nombre = this.t_nombreCarpetaw.Text.ToString().Trim();
+                if (nombre != "" && Session["Padre"] != null)
+                {
+                    Cc.ActualizarNombreCarpeta(nombre, Session["Padre"].ToString());
+                    this.tienda.Reload();
+                    this.t_nombreCarpetaw.Text = "";
+                    X.Msg.Notify("Mensaje", "Proceso completado");
+                }
+                else {
+                    X.Msg.Notify("Error", "Todos los datos son obligatorios");
+                }
+
+            }
+            catch (Exception ea) {
+                X.Msg.Notify("Error", "Ha ocurrido un error");
+            }
+        }
+        #endregion
     }
 }

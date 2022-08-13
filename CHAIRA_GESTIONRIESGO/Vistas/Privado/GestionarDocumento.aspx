@@ -17,8 +17,9 @@
 
 
         var handler = function (grid, rowIndex, colIndex, actionItem, event, record, row) {
-            //Ext.Msg.alert('Editando' + (record.get('done') ? ' completed task' : ''), record.get('id'));
-            if (record.get('tipo') == "Carpeta") {
+           // Ext.Msg.alert('Editando' + (record.get('done') ? ' completed task' : ''), record.get('id'));
+            if (record.get('tipo') == "Directorio") {
+
             App.direct.ActivarVentana(record.get('id'), "1");
             } else {
                 App.direct.ActivarVentana(record.get('id'), "2");
@@ -39,8 +40,50 @@
 
         //    Ext.Msg.alert("Node droped", buf.join(""));
         //};
-     
+        var filterTree = function (tf, e) {
+            var tree = App.TreePanel1,
+                store = tree.store,
+                logic = tree,
+                /*logic = App.FilterLogic.getValue() ? tree : store,*/
+                text = tf.getRawValue();
 
+            logic.clearFilter();
+
+            if (Ext.isEmpty(text, false)) {
+                return;
+            }
+
+            if (e.getKey() === Ext.EventObject.ESC) {
+                clearFilter();
+            } else {
+                var re = new RegExp(".*" + text + ".*", "i");
+
+                logic.filterBy(function (node) {
+                    return re.test(node.data.text);
+                });
+            }
+        };
+
+        var clearFilter = function () {
+            var field = App.TriggerField1,
+                tree = App.TreePanel1,
+                store = tree.store,
+                logic = tree;
+            //logic = App.FilterLogic.getValue() ? tree : store;
+
+            field.setValue("");
+            logic.clearFilter(true);
+            tree.getView().focus();
+        };
+        var changeArchivo = function () {
+            if (App.TArchivoSoporteMeta.fileInputEl.dom.files[0].size <= 5242880 && App.TArchivoSoporteMeta.fileInputEl.dom.files[0].size > 0) {
+                return true;
+            } else {
+                Ext.Msg.notify('Información', 'El tamaño del archivo no puede exceder 5mb');
+                App.TArchivoSoporteMeta.reset();
+                return false;
+            }
+        };
     </script>
 </head>
 <body>
@@ -56,6 +99,41 @@
                     AutoScroll="true"
                     Layout="Fit"
                     Collapsible="true">
+                    <TopBar>
+
+                        <ext:Toolbar runat="server">
+
+                            <Items>
+
+                                <ext:ToolbarTextItem runat="server" Text="Buscar:" />
+                                <ext:ToolbarSpacer />
+                                <ext:TextField
+                                    ID="TriggerField1"
+                                    runat="server"
+                                    EnableKeyEvents="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" />
+                                    </Triggers>
+                                    <Listeners>
+                                        <KeyUp Fn="filterTree" Buffer="250" />
+                                        <TriggerClick Handler="clearFilter();" />
+                                    </Listeners>
+                                </ext:TextField>
+                                <ext:ToolbarSpacer />
+                                <ext:Button ID="Button5" runat="server" Icon="ArrowDown">
+                                    <Listeners>
+                                        <Click Handler="#{TreePanel1}.expandAll();" />
+                                    </Listeners>
+                                </ext:Button>
+                                <ext:Button ID="Button6" runat="server" Icon="ArrowUp" X="5">
+                                    <Listeners>
+                                        <Click Handler="#{TreePanel1}.collapseAll();" />
+                                    </Listeners>
+                                </ext:Button>
+
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                     <Items>
                         <ext:TreePanel
                             runat="server"
@@ -69,13 +147,13 @@
                             ID="TreePanel1"
                             FolderSort="true"
                              >
-                            <Fields>
+                           <%-- <Fields>
                                 <ext:ModelField Name="Nombre" />
                                 <ext:ModelField Name="Id" />
                                 <ext:ModelField Name="Tamaño" />
                                 <ext:ModelField Name="Tipo" />
                                 <ext:ModelField Name="Operacion" />
-                            </Fields>
+                            </Fields>--%>
                             <ColumnModel>
                                 <Columns>
                                     <ext:TreeColumn
@@ -92,12 +170,12 @@
                                         Sortable="true"
                                         DataIndex="id"
                                         Hidden="true" />
-                                    <ext:Column
+                                    <%--<ext:Column
                                         runat="server"
                                         Text="Tamaño"
                                         Flex="2"
                                         Sortable="true"
-                                        DataIndex="tamaño" />
+                                        DataIndex="tamaño" />--%>
                                     <ext:Column
                                         runat="server"
                                         Text="Tipo"
@@ -130,7 +208,23 @@
                                </Plugins>
                             </ext:TreeView>
             </View>--%>
-            
+                    
+
+
+                            <Store>
+                        <ext:TreeStore runat="server" OnReadData="NodeLoad" ID="tienda">
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Parameters>
+                                <%--<ext:StoreParameter Name="prefix" Value="#{TextField1}.getValue()" Mode="Raw" />--%>
+                            </Parameters>
+                        </ext:TreeStore>
+                    </Store>
+                    <Root>
+                        <ext:Node NodeID="1" Text="Directorio"  Icon="Folder"/>
+                    </Root>
+                    <ViewConfig LoadMask="false" />
                         </ext:TreePanel>
                     </Items>
                 </ext:Panel>
@@ -167,8 +261,10 @@
                                     Name="Nombre"
                                     Flex="1"
                                     FieldLabel="Nombre"
-                                    AllowBlank="false" />
-                                <ext:Button runat="server" Text="Cambiar nombre" MarginSpec="25 0 0 10"></ext:Button>
+                                    AllowBlank="false"
+                                    ID="t_nombreCarpetaw"
+                                    />
+                                    <ext:Button runat="server" Text="Cambiar nombre" MarginSpec="25 0 0 10"  OnDirectClick="CambiarNombreCarpeta_Click"></ext:Button>
                                     <ext:TextField
                                     runat="server"
                                     Name="Nombre2"
@@ -177,8 +273,9 @@
                                     AllowBlank="false"
                                         EmptyText="Nombre:"
                                        MarginSpec="0 0 0 10"
+                                        ID="t_NombreCarpeta"
                                         />
-                                <ext:Button runat="server" Text="Agregar" MarginSpec="25 0 0 10"></ext:Button>
+                                <ext:Button runat="server" Text="Agregar " MarginSpec="25 0 0 10" OnDirectClick="AgregarCarpeta_Click"></ext:Button>
 
                             </Items>
                         </ext:FieldContainer>
@@ -189,7 +286,25 @@
                             Layout="HBoxLayout">
                             <FieldDefaults LabelAlign="Top" />
                             <Items>
-                                <ext:FileUploadField ID="BasicField" runat="server" Flex="2" Icon="Attach" FieldLabel="Agregar archivo" />
+                                <%-- Guardar Archivo --%>
+                                <ext:FileUploadField runat="server" ID="TArchivoSoporteMeta"  Flex="2">
+                                    <Listeners>
+                                        <Change Fn="changeArchivo" />
+                                    </Listeners>
+                                </ext:FileUploadField>
+                                <ext:Button runat="server" Hidden="false" ID="BArchivo" Text="Agregar archivo" UI="Default" Icon="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="AgregarArchivo_Click">
+                                            <EventMask ShowMask="true" Msg="Guardando archivo" />
+                                            <ExtraParams>
+                                                <%--<ext:Parameter Name="data" Value="App.FPSoporteMetaProducto.getValues()" Mode="Raw" />--%>
+                                                <ext:Parameter Name="padre" Value="1" Mode="Value" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+
+                                <%-- Fin guardar archivo --%>
                                 <%-- Tomar ruta --%>
                                 <%-- <ext:Button runat="server" Text="Get File Path">
                                     <Listeners>
@@ -205,10 +320,10 @@
                                             EmptyText="Estado:"
                                              Flex="1"
                                             AllowBlank="false"
-                                            MarginSpec="25 0 0 10"
+                                            MarginSpec="0 0 0 10"
                                              >
                                             <Store>
-                                                <ext:Store ID="Store1" runat="server">
+                                                <ext:Store ID="s_comboEstado" runat="server">
                                                     <Model>
                                                         <ext:Model runat="server" IDProperty="Value">
                                                             <Fields>

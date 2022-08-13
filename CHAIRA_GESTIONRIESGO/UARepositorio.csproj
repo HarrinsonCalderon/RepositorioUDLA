@@ -202,6 +202,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Modelo\Modelsbd\Combo.cs" />
     <Compile Include="Modelo\Modelsbd\Menu.cs" />
     <Compile Include="Modelo\Models\ComboBoxModel.cs" />
     <Compile Include="Modelo\Models\metadata.cs" />

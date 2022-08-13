@@ -15,7 +15,9 @@ namespace CHAIRA_GESTIONRIESGO.Utilities
         public ArchivosMongo(string tipoArchivo = "DOC")
         {
             this.tipoArchivo = tipoArchivo;
-            this.nombreBaseDatos = this.tipoArchivo.Equals("IMG") ? "DocumentosPOAI" : this.tipoArchivo.Equals("DOC") ? "DocumentosPOAI" : "";
+            //this.nombreBaseDatos = this.tipoArchivo.Equals("IMG") ? "DocumentosPOAI" : this.tipoArchivo.Equals("DOC") ? "DocumentosPOAI" : "";
+            this.nombreBaseDatos = "DocumentosPOAI";
+
         }
 
         public MongoInfoArchivo consultarArchivo(string idArchivoMongo)
