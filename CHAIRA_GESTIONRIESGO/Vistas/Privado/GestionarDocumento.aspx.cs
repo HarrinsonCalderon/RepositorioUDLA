@@ -299,7 +299,7 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
                 //string IncaAdjunto = e.ExtraParams["MONID"].ToString();
                 string IncaAdjunto = mid;
                 MongoInfoArchivo InfArchivo = MG.DocumentoConsultarId(IncaAdjunto);
-
+                Session["mid"] = mid;
                 if (InfArchivo.Archivo.Length > 0)
                 {
                     if (Array.IndexOf(new String[] { "jpg", "png", "gif", "ico", "tif", "bmp", "emf", "wmf", "exif" }, InfArchivo.Extension.ToLower()) >= 0)
@@ -318,7 +318,7 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
                     }
                     else
                     {
-                        Session["DATA"] = new Dictionary<String, Object>() { { "NOMBREARCHIVO", InfArchivo.NombreArchivo }, { "DESCARGAINMEDIATA", "SI" }, { "ARCHIVO", InfArchivo.Archivo.ToArray() } };
+                        Session["DATA"] = new Dictionary<String, Object>() { { "NOMBREARCHIVO", InfArchivo.NombreArchivo }, { "DESCARGAINMEDIATA", "NO" }, { "ARCHIVO", InfArchivo.Archivo.ToArray() } };
 
                         PanelContenedor1.Loader = new ComponentLoader { Url = "..\\PaginasWeb\\Descarga.aspx" };
                         PanelContenedor1.LoadContent();
@@ -338,6 +338,68 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
             }
         }
 
+
+        protected void EditarArchivo_Click(object sender, DirectEventArgs e)
+        {
+            try
+
+            {
+                if (t_nombre_Archivo.Text.Trim() != "")
+                {
+                     
+                    Cc.CambiarNombre(Session["mid"].ToString(), t_nombre_Archivo.Text.Trim());
+                }
+                if (FileUploadField1actualizar.HasFile)
+                {
+                    string ext = Path.GetExtension(FileUploadField1actualizar.FileName);
+                    string nombreArchivo = this.ObtenerNombreArchivo(FileUploadField1actualizar.FileName);
+                    //string descripcion = TFDescripcionSoporteMeta.Text;
+                    //var datasoporte = (JObject)JsonConvert.DeserializeObject(e.ExtraParams["data"]);
+                    //var datasoporte = e.ExtraParams["data"].ToString();
+                    string Id = Session["mid"].ToString();
+                    MongoInfoArchivo InfArchivo = MG.DocumentoConsultarId(Id);
+
+                    ArchivosMongo am = new ArchivosMongo("DOC");
+
+                    byte[] archivo = FileUploadField1actualizar.FileBytes;
+                    if (t_nombre_Archivo.Text.Trim() != "")
+                    {
+                        nombreArchivo = t_nombre_Archivo.Text.Trim();
+                        
+                    }
+                        //Guardar documento adjunto en MongoDB
+                        MongoRespuesta respuesta = am.modificarArchivo(Id, archivo, ext, nombreArchivo.ToString(), _pege_id);
+                    
+
+                    if (respuesta.Tipo == MongoTipoRes.SI)
+                    {
+                        //actualizar nombre sql server
+                        this.tienda.Reload();
+                         
+                    }
+                    else
+                    {
+                         X.Msg.Notify("Error al guardar el archivo", "Error al guardar el archivo en la base de datos general" + respuesta.Mensaje).Show();
+                    }
+                }   
+                else
+                {
+                    X.Msg.Notify("Información", "No se ha seleccionado un archivo de referencia").Show();
+                }
+                
+                   
+                  
+                 
+            }
+            catch (Exception ex)
+            {
+                X.Msg.Notify("Error", "Ha ocurrido un error al guardar archivo. Detalle: " + ex.Message).Show();
+            }
+            this.t_nombre_Archivo.Text = "";
+            this.FileUploadField1actualizar.Text="";
+            this.tienda.Reload();
+            
+        }
         #endregion
     }
 }

@@ -285,6 +285,34 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
             }
 
         }
+        public Combo CambiarNombre(string idmenu, string nombre)
+        {
+            Combo l = null;
+            try
+            {
+
+                using (RepositorioUAEntities bd = new RepositorioUAEntities())
+                {
+                    l = (from a in bd.menu
+
+                         where a.mid == idmenu
+                         select new Combo
+                         {
+                             Value = a.idmenu,
+                         }).FirstOrDefault();
+                    var Omenu = bd.menu.Find(l.Value);
+                    Omenu.nombre = nombre;
+                    bd.Entry(Omenu).State = System.Data.Entity.EntityState.Modified;
+                    bd.SaveChanges();
+                }
+            }
+            catch (Exception ea)
+            {
+
+            }
+
+            return l;
+        }
         #endregion
 
 
@@ -310,6 +338,7 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
 
             return result1[result1.Count()-1];
         }
+         
         public List<Combo> CargarComboEstado() {
             List<Combo> l=null;
             using (RepositorioUAEntities bd=new RepositorioUAEntities()) {

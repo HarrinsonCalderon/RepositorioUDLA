@@ -213,13 +213,13 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.Button Button3;
 
         /// <summary>
-        /// Control Button4.
+        /// Control FileUploadField1actualizar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Ext.Net.Button Button4;
+        protected global::Ext.Net.FileUploadField FileUploadField1actualizar;
 
         /// <summary>
         /// Control WinVerAdjunto.

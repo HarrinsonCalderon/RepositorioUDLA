@@ -344,6 +344,7 @@
                                 <ext:Panel ID="Panel10" runat="server" Border="false">
                                     <Items>
                                         <ext:Button ID="b_guardar" runat="server" Text="Guardar" MarginSpec="10 0 10 0" Icon="DatabaseSave" OnDirectClick="w_GuardarCarpeta">
+                                          
                                         </ext:Button>
                                         <ext:Button ID="Button16" runat="server" Text="Cancelar" MarginSpec="10 0 10 5" Icon="Cancel" Handler="App.w_ventana.hide();">
                                         </ext:Button>
@@ -395,7 +396,7 @@
                                     Flex="1"
                                     FieldLabel="Nombre"
                                     AllowBlank="false" />
-                                <ext:Button runat="server" Text="Cambiar nombre" MarginSpec="25 0 0 10"></ext:Button>
+                                <ext:Label runat="server" Text="Cambiar nombre" MarginSpec="25 0 0 10"  ></ext:Label>
 
                             </Items>
                         </ext:FieldContainer>
@@ -408,8 +409,20 @@
                                           
                                         <ext:Button ID="Button3" runat="server" Text="Eliminar archivo" MarginSpec="10 0 10 0" Icon="Cancel">
                                         </ext:Button>
-                                        <ext:Button ID="Button4" runat="server" Text="Reemplazar archivo" MarginSpec="10 0 10 5" Icon="Database">
-                                        </ext:Button>
+                                        <ext:FileUploadField runat="server" ID="FileUploadField1actualizar"   LabelAlign="Right" AllowBlank="false" Flex="1"  MarginSpec="0 0 0 5" FieldLabel="Reemplazar archivo">
+                                        <Listeners>
+                                            <Change Fn="changeArchivo" />
+                                        </Listeners>
+                                    </ext:FileUploadField>
+                                   <%-- <ext:Button runat="server" Hidden="false" ID="Button7" Text="Reemplazar archivo" UI="Default" MarginSpec="10 0 10 5" Icon="Database">
+                                        <DirectEvents>
+                                            <Click OnEvent="AgregarArchivo_Click">
+                                                <EventMask ShowMask="true" Msg="Guardando archivo" />
+                                                 
+                                            </Click>
+                                        </DirectEvents>
+                                    </ext:Button>--%>
+                                         
                                        
                                     </Items>
                                 </ext:Panel>
@@ -441,6 +454,12 @@
                                 <ext:Panel ID="Panel2" runat="server" Border="false">
                                     <Items>
                                         <ext:Button ID="Button1" runat="server" Text="Guardar" MarginSpec="10 0 10 0" Icon="DatabaseSave">
+                                              <DirectEvents>
+                                            <Click OnEvent="EditarArchivo_Click">
+                                                <EventMask ShowMask="true" Msg="Guardando archivo" />
+                                                 
+                                            </Click>
+                                        </DirectEvents>
                                         </ext:Button>
                                         <ext:Button ID="Button2" runat="server" Text="Cancelar" MarginSpec="10 0 10 5" Icon="Cancel">
                                         </ext:Button>

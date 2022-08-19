@@ -86,5 +86,18 @@ namespace CHAIRA_GESTIONRIESGO.Controlador
                 return false;
             }
         }
+        public bool CambiarNombre(string idmenu, string nombre)
+        {
+            try
+            {
+
+                Mc.CambiarNombre(idmenu, nombre);
+                return true;
+            }
+            catch (Exception ea)
+            {
+                return false;
+            }
+        }
     }
 }
