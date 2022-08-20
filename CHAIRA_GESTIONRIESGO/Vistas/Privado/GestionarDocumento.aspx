@@ -12,7 +12,15 @@
     <title>Documentos</title>
 
     <link href="/resources/css/examples.css" rel="stylesheet" />
-
+     <style>
+        a{
+        text-decoration:none;
+        color:black;  
+        }
+        .panel{
+            background-color: lightblue;
+        }
+    </style>
     <script>
 
 
@@ -81,6 +89,15 @@
             } else {
                 Ext.Msg.notify('Información', 'El tamaño del archivo no puede exceder 5mb');
                 App.TArchivoSoporteMeta.reset();
+                return false;
+            }
+        };
+        var changeArchivo2 = function () {
+            if (App.FileUploadField2.fileInputEl.dom.files[0].size <= 5242880 && App.FileUploadField2.fileInputEl.dom.files[0].size > 0) {
+                return true;
+            } else {
+                Ext.Msg.notify('Información', 'El tamaño del archivo no puede exceder 5mb');
+                App.FileUploadField2.reset();
                 return false;
             }
         };
@@ -198,17 +215,7 @@
                                 </Columns>
 
                             </ColumnModel>
-                             <%--<Listeners>
-                            <ItemMove Fn="moveNode" Delay="1" />
-                        </Listeners>
-                        <View>
-                            <ext:TreeView runat="server">
-                               <Plugins>
-                                   <ext:TreeViewDragDrop runat="server" ContainerScroll="true" />
-                               </Plugins>
-                            </ext:TreeView>
-            </View>--%>
-                    
+                   
 
 
                             <Store>
@@ -221,8 +228,8 @@
                             </Parameters>
                         </ext:TreeStore>
                     </Store>
-                    <Root>
-                        <ext:Node NodeID="1" Text="Directorio"  Icon="Folder"/>
+                    <Root  >
+                        <ext:Node NodeID="1" Text="Directorio"  Icon="Folder" />
                     </Root>
                     <ViewConfig LoadMask="false" />
                         </ext:TreePanel>
@@ -396,8 +403,14 @@
                                     Flex="1"
                                     FieldLabel="Nombre"
                                     AllowBlank="false" />
-                                <ext:Label runat="server" Text="Cambiar nombre" MarginSpec="25 0 0 10"  ></ext:Label>
-
+                              
+                                 <ext:Button runat="server" Hidden="false" ID="Button7" Text="Cambiar nombre" UI="Default" Icon="Add" MarginSpec="25 0 0 10">
+                                            <DirectEvents>
+                                                <Click OnEvent="CambiarNombreArchivo_Click">
+                                                   
+                                                </Click>
+                                            </DirectEvents>
+                                        </ext:Button>
                             </Items>
                         </ext:FieldContainer>
 
@@ -407,13 +420,30 @@
                                 <ext:Panel ID="Panel5" runat="server" Border="false" Layout="ColumnLayout">
                                     <Items>
                                           
-                                        <ext:Button ID="Button3" runat="server" Text="Eliminar archivo" MarginSpec="10 0 10 0" Icon="Cancel">
+                                        <ext:Button ID="Button3" runat="server" Text="Eliminar archivo" MarginSpec="10 10 10 0" Icon="Cancel">
+                                            <DirectEvents>
+                                                <Click OnEvent="EliminarArchivo_Click">
+
+                                                </Click>
+                                            </DirectEvents>
                                         </ext:Button>
-                                        <ext:FileUploadField runat="server" ID="FileUploadField1actualizar"   LabelAlign="Right" AllowBlank="false" Flex="1"  MarginSpec="0 0 0 5" FieldLabel="Reemplazar archivo">
-                                        <Listeners>
-                                            <Change Fn="changeArchivo" />
-                                        </Listeners>
-                                    </ext:FileUploadField>
+                                        <ext:FileUploadField runat="server" ID="FileUploadField2"  LabelAlign="Top" AllowBlank="false" Flex="1" MarginSpec="10 0 10 0">
+                                            <Listeners>
+                                                <Change Fn="changeArchivo2" />
+                                            </Listeners>
+                                        </ext:FileUploadField>
+                                        <ext:Button runat="server" Hidden="false" ID="Button4" Text="Reemplazar archivo" UI="Default" Icon="Add" MarginSpec="10 5 10 0">
+                                            <DirectEvents>
+                                                <Click OnEvent="ReemplazarArchivo_Click">
+                                                    <EventMask ShowMask="true" Msg="Reemplazando archivo" />
+                                                    <ExtraParams>
+                                                        
+                                                        <ext:Parameter Name="data" Value="1" Mode="Value" />
+                                                    </ExtraParams>
+                                                </Click>
+                                            </DirectEvents>
+                                        </ext:Button>
+                                    
                                    <%-- <ext:Button runat="server" Hidden="false" ID="Button7" Text="Reemplazar archivo" UI="Default" MarginSpec="10 0 10 5" Icon="Database">
                                         <DirectEvents>
                                             <Click OnEvent="AgregarArchivo_Click">
@@ -454,7 +484,7 @@
                                 <ext:Panel ID="Panel2" runat="server" Border="false">
                                     <Items>
                                         <ext:Button ID="Button1" runat="server" Text="Guardar" MarginSpec="10 0 10 0" Icon="DatabaseSave">
-                                              <DirectEvents>
+                                         <DirectEvents>
                                             <Click OnEvent="EditarArchivo_Click">
                                                 <EventMask ShowMask="true" Msg="Guardando archivo" />
                                                  

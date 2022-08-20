@@ -31,7 +31,7 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
             using (RepositorioUAEntities bd = new RepositorioUAEntities())
             {
                 l = (from a in bd.rol
-                    //where a.idrol!=1
+                     where a.idrol!=1
                      select new Combo
                      {
                          Text = a.nombre,

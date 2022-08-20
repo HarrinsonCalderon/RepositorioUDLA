@@ -122,6 +122,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="SP_ELIMINARARCHIVO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idmenu" Type="int" Mode="In" />
+  </Function>
   <EntityContainer Name="RepositorioUAModelStoreContainer">
     <EntitySet Name="estadoprivilegio" EntityType="Self.estadoprivilegio" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="estadorol" EntityType="Self.estadorol" Schema="dbo" store:Type="Tables" />

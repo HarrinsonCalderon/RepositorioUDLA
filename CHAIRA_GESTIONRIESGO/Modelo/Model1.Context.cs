@@ -12,6 +12,8 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class RepositorioUAEntities : DbContext
     {
@@ -31,5 +33,14 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
         public virtual DbSet<privilegio> privilegio { get; set; }
         public virtual DbSet<rol> rol { get; set; }
         public virtual DbSet<usuario> usuario { get; set; }
+    
+        public virtual int SP_ELIMINARARCHIVO(Nullable<int> idmenu)
+        {
+            var idmenuParameter = idmenu.HasValue ?
+                new ObjectParameter("idmenu", idmenu) :
+                new ObjectParameter("idmenu", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_ELIMINARARCHIVO", idmenuParameter);
+        }
     }
 }

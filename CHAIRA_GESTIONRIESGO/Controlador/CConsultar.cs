@@ -99,5 +99,20 @@ namespace CHAIRA_GESTIONRIESGO.Controlador
                 return false;
             }
         }
+       
+         public bool EliminarArchivo(string mid, string EstadoNuevo)
+        {
+            try
+            {
+
+                Mc.EliminarArchivo(mid, EstadoNuevo);
+                return true;
+            }
+            catch (Exception ea)
+            {
+                return false;
+            }
+        }
     }
+
 }

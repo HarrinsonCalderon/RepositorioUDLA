@@ -186,6 +186,15 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.TextField t_nombre_Archivo;
 
         /// <summary>
+        /// Control Button7.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Button Button7;
+
+        /// <summary>
         /// Control Panel4.
         /// </summary>
         /// <remarks>
@@ -213,13 +222,22 @@ namespace CHAIRA_GESTIONRIESGO.Vistas.Privado
         protected global::Ext.Net.Button Button3;
 
         /// <summary>
-        /// Control FileUploadField1actualizar.
+        /// Control FileUploadField2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Ext.Net.FileUploadField FileUploadField1actualizar;
+        protected global::Ext.Net.FileUploadField FileUploadField2;
+
+        /// <summary>
+        /// Control Button4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Ext.Net.Button Button4;
 
         /// <summary>
         /// Control WinVerAdjunto.

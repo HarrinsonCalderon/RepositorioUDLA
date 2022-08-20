@@ -165,5 +165,8 @@
       <End Role="rol" EntitySet="rol" />
       <End Role="usuario" EntitySet="usuario" />
     </AssociationSet>
+    <FunctionImport Name="SP_ELIMINARARCHIVO">
+      <Parameter Name="idmenu" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
 </Schema>

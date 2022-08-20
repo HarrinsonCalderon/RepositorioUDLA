@@ -24,12 +24,13 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
 
             using (RepositorioUAEntities bd = new RepositorioUAEntities())
             {
-                l = (from a in bd.usuario
-                     join b in bd.rol on a.fkrol equals b.idrol
-                     join c in bd.privilegio on b.idrol equals c.fkrol
+                l = (
+                      
+                     from c in bd.privilegio  
                      join d in bd.menu on c.fkmenu equals d.idmenu
                      //where b.fkestadorol==1 && c.fkestadoprivilegio==1 && d.fkmenu.ToString()==p
-                     where c.fkestadoprivilegio==1 && d.fkmenu.ToString() == p && c.fkrol == Idrol
+                     where   d.fkmenu.ToString() == p && c.fkrol == Idrol
+                     
                      select new Menu
                      {
                          Id = d.idmenu.ToString(),
@@ -111,7 +112,7 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
                 l = ( 
                      from c in bd.privilegio
                      join d in bd.menu on c.fkmenu equals d.idmenu
-                     where c.fkestadoprivilegio == 1 && d.fkmenu.ToString() == p && c.fkrol==3
+                     where c.fkestadoprivilegio == 1 && d.fkmenu.ToString() == p && c.fkrol==3  
 
                      select new Menu
                      {
@@ -256,6 +257,33 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
             }
 
         }
+        public void EliminarArchivo(string mid, string EstadoNuevo)
+        {
+
+            try
+            {
+                
+                using (RepositorioUAEntities bd = new RepositorioUAEntities())
+                {
+                    //privilegio oPrivilegio = new privilegio();
+                    //oPrivilegio = (from c in bd.privilegio
+                    //               join d in bd.menu on c.fkmenu equals d.idmenu
+                    //               where d.mid == mid
+                    //               select c
+                    //            ).FirstOrDefault();
+                    //oPrivilegio.fkestadoprivilegio = int.Parse(EstadoNuevo);
+                    //bd.Entry(oPrivilegio).State = System.Data.Entity.EntityState.Modified;
+                    //bd.SaveChanges();
+                    //bd.SP_ELIMINARARCHIVO(mid);
+                    //bd.SaveChanges();
+                }
+            }
+            catch (Exception ea)
+            {
+
+            }
+
+        }
         public Combo CargarFormularioCarpeta(string id)
         {
 
@@ -343,6 +371,7 @@ namespace CHAIRA_GESTIONRIESGO.Modelo
             List<Combo> l=null;
             using (RepositorioUAEntities bd=new RepositorioUAEntities()) {
                 l = (from a in bd.estadoprivilegio
+                     where a.idestadoprivilegio!=3
                      select new Combo
                      {
                          Text = a.nombre,

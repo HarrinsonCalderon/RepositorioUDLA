@@ -57,5 +57,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_ELIMINARARCHIVO" FunctionName="RepositorioUAModel.Store.SP_ELIMINARARCHIVO" />
   </EntityContainerMapping>
 </Mapping>
